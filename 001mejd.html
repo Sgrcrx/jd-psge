@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>work</title>
+		<link rel="stylesheet" type="text/css" href="css/allss.css" />
+		<link rel="stylesheet" type="text/css" href="css/works.css" />
+		<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/weui.css" />
+		<style type="text/css">
+			.check-box {
+				width: 0.3rem;
+				height: 0.3rem;
+				background-image: url(img/chooses.png);
+				background-size: contain;
+				margin-top: 1.25rem;
+				position: relative;
+				right: 0.1rem;
+			}
+			
+			.check-box.selected {
+				background-image: url(img/ok.png);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<!--header-->
+			<header class="flex">
+				<a class="back" href=""></a>
+				<p class="flex-item title">京东购物车</p>
+				<a class="user" href="#">
+					<i class="fa fa-search"></i>
+				</a>
+			</header>
+			<!--001-->
+			<ul>
+				<li class="flex" v-for="(item,index) in goods">
+					<div class="flex-item left">
+						<div class="check-box" :class="{'selected':item.selected}" @click="select(index)"></div>
+					</div>
+					<div class="flex-item right">
+						<div class="flex content">
+							<div class="flex-item">
+								<div class="image">
+									<img v-bind:src="item.image" />
+								</div>
+							</div>
+							<div class="flex-item inner">
+								<div class="text">
+									<h4 v-text="item.title"></h4>
+									<h5>0.85kg</h5>
+									<p>
+										<span class="bai">白条6期免息</span>
+									</p>
+								</div>
+								<div class="flex bot">
+									<div class="money flex-item">
+										￥<span id="num" v-text="item.price"></span>.00
+									</div>
+									<div class="choose flex-item">
+										<span id="minus" @click="item.count = item.count>1?--item.count:item.count;">-</span>
+										<span id="num1" v-text="item.count"></span>
+										<span id="add" @click="item.count++">+</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+
+			<!--下拉-->
+			<div class="crx"></div>
+			<!--结算-->
+			<div class="flex jie">
+				<div class="all">
+					<div id="check" class="check-box" @click="selectAll" :class="{'selected':all}" style="margin: 0.1rem;display: inline-block;"></div>
+					<span id="ch">
+						全选
+					</span>
+				</div>
+				<div class="he">合计:￥
+					<span id="yu" v-text="money"></span>
+					<suan id="jiao">.00</suan>
+				</div>
+				<div class="go">去结算（<span v-text="total" ></span>）</div>
+			</div>
+
+		</div>
+
+		<!--js-->
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript">
+			var app = new Vue({
+				el: '#app',
+				data: {
+					
+					image: '',
+					all: false,
+					goods: [{
+						id: 1,
+						title: 'OPPO Find X手机【6期免息】双曲面全景屏 8G运存+128G/256G内存双卡双待全网通 波尔多红（标准版）8GB+128GB',
+						price: 4999,
+						count: 1,
+						image: 'img/phone.jpg',
+						selected: false,
+					}, {
+						id: 2,
+						title: 'Apple iPhone X (A1865) 64GB 深空灰色 移动联通电信4G手机',
+						price: 5999,
+						count: 1,
+						image: 'img/iphoneX.webp',
+						selected: false,
+					}, {
+						id: 3,
+						title: '微软（Microsoft）Surface Book 2 二合一平板电脑笔记本 13.5英寸（Intel i5 8G内存 256G存储）银色',
+						price: 6999,
+						count: 1,
+						image: 'img/MicrosoftSurfaceBook.webp',
+						selected: false,
+					}],
+					selected: []
+				},
+				methods: {
+					select: function(index) {
+						this.goods[index].selected = !this.goods[index].selected;
+						// 如果是true则添加到selected数组中
+						if(this.goods[index].selected) {
+							var flag = false;
+							for(var i = 0; i < this.selected.length; i++) {
+								if(this.selected[i].id == this.goods[index].id) {
+									flag = true;
+								}
+							}
+							// 如果数组中不存在则新增，如果存在则不再添加
+							if(!flag)
+								this.selected.push(this.goods[index]);
+							// 如果是false则从selected中删除
+						} else {
+							// 如果数组中确实有这个数据则删除
+							for(var i = 0; i < this.selected.length; i++) {
+								if(this.selected[i].id == this.goods[index].id) {
+									this.selected.splice(i, 1);
+								}
+							}
+						}
+						// 如果选中所有的商品则全选变成true，如果有一个没有选中则变成false
+						if(this.goods.length == this.selected.length) {
+							this.all = true;
+						} else {
+							this.all = false;
+						};
+						console.log(this.selected);
+					},
+
+					//
+					selectAll: function() {
+						this.all = !this.all;
+						this.selected = [];
+						if(this.all) {
+							for(var i = 0; i < this.goods.length; i++) {
+								this.selected.push(this.goods[i]);
+								this.goods[i].selected = true;
+							}
+						} else {
+							this.selected = [];
+							for(var i = 0; i < this.goods.length; i++) {
+								this.goods[i].selected = false;
+							}
+						}
+
+					}
+				},
+				computed:{
+					total:function(){
+						var s = 0;
+						for(var i=0; i<this.selected.length;i++){
+							s += this.selected[i].count;
+						}
+						return s;
+					},
+					money:function(){
+						var su = 0;
+						for(var i=0; i<this.selected.length;i++){
+							su += this.selected[i].count*this.selected[i].price;
+						}
+						return su;
+					}
+				},
+			});
+		</script>
+	</body>
+
+</html>

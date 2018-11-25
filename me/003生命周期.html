@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			span{
+				padding: 10px;
+				font-size: 24px;
+				cursor: pointer;
+			}
+			button{
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<span @click="aa--">-</span>
+			<span v-text="aa"></span>
+			<span @click="aa++">+</span>
+		</div>
+		<button id="destroy">销毁</button>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el: '#app',
+				data: {
+					aa:0,
+				},
+				methods: {},
+				computed: {},
+				watch: {},
+				beforeCreate:function(){
+					console.log('创建前');
+				},
+				created:function(){
+					console.log('创建后');
+				},
+				beforeMount:function(){
+					console.log('渲染前');
+				},
+				mounted:function(){
+					console.log('渲染后');
+				},
+				beforeUpdate:function(){
+					console.log('更新前');
+				},
+				updated:function(){
+					console.log('更新后');
+				},
+				beforeDestroy:function(){
+					console.log('销毁前');
+				},
+				destroyed:function(){
+					console.log('销毁后');
+				},
+			});
+			document.querySelector("#destroy").onclick = function(){
+				app.$destroy();
+			}
+		</script>
+	</body>
+
+</html>

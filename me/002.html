@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		*[v-]
+	</head>
+	<body>
+		<div id="app">
+			<p><span v-text="msg"></span></p>
+			<p v-once>{{msg}}</p>
+			<input type="text" v-model="msg" name="" id="" value="" />
+			<p v-cloak="">{{msg}}</p>
+			<p v-pre>{{msg}}</p>
+		</div>
+		<script src="../js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var app = new Vue({
+				el:'#app',
+				data:{
+					msg:'what?',
+				},
+				methods:{},
+				computed:{},
+				watch:{},
+			});
+		</script>
+	</body>
+</html>
